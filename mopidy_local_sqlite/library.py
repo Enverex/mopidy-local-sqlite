@@ -165,6 +165,10 @@ class SQLiteLibrary(local.Library):
             return map(_dateref, schema.dates(self._connect(), format=format))
         if type == 'genre':
             return map(_genreref, schema.list_distinct(self._connect(), 'genre'))  # noqa
+        if type == 'mood':
+            return map(_moodref, schema.list_distinct(self._connect(), 'mood'))  # noqa
+        if type == 'key':
+            return map(_keyref, schema.list_distinct(self._connect(), 'key'))  # noqa
 
         # Fix #38: keep sort order of album tracks; this also applies
         # to composers and performers
@@ -251,4 +255,16 @@ def _genreref(genre):
     return Ref.directory(
         uri=uritools.uricompose('local', None, 'directory', {'genre': genre}),
         name=genre
+    )
+
+def _moodref(mood):
+    return Ref.directory(
+        uri=uritools.uricompose('local', None, 'directory', {'mood': mood}),
+        name=mood
+    )
+
+def _keyref(key):
+    return Ref.directory(
+        uri=uritools.uricompose('local', None, 'directory', {'key': key}),
+        name=key
     )

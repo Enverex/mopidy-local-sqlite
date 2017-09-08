@@ -31,6 +31,9 @@ CREATE TABLE track (
     composers       TEXT,               -- (list of Artist) – track composers
     performers      TEXT,               -- (list of Artist) – track performers
     genre           TEXT,               -- track genre
+    mood            TEXT,               -- track mood
+    key             TEXT,               -- track tonal key
+    bpm             INTEGER,            -- track speed
     track_no        INTEGER,            -- track number in album
     disc_no         INTEGER,            -- disc number in album
     date            TEXT,               -- track release date (YYYY or YYYY-MM-DD)
@@ -55,6 +58,9 @@ CREATE INDEX track_artists_index        ON track (artists);
 CREATE INDEX track_composers_index      ON track (composers);
 CREATE INDEX track_performers_index     ON track (performers);
 CREATE INDEX track_genre_index          ON track (genre);
+CREATE INDEX track_mood_index           ON track (mood);
+CREATE INDEX track_key_index            ON track (key);
+CREATE INDEX track_bpm_index            ON track (bpm);
 CREATE INDEX track_track_no_index       ON track (track_no);
 CREATE INDEX track_date_index           ON track (date);
 CREATE INDEX track_comment_index        on track (comment);
@@ -82,6 +88,9 @@ SELECT track.rowid                      AS docid,
        track.uri                        AS uri,
        track.name                       AS name,
        track.genre                      AS genre,
+       track.mood                       AS mood,
+       track.key                        AS key,
+       track.bpm                        AS bpm,
        track.track_no                   AS track_no,
        track.disc_no                    AS disc_no,
        track.date                       AS date,
@@ -132,6 +141,9 @@ SELECT docid                            AS docid,
        performer_name                   AS performer,
        albumartist_name                 AS albumartist,
        genre                            AS genre,
+       mood                             AS mood,
+       key                              AS key,
+       bpm                              AS bpm,
        track_no                         AS track_no,
        coalesce(date, album_date)       AS date,
        comment                          AS comment
@@ -148,6 +160,9 @@ CREATE VIRTUAL TABLE fts USING fts3 (
     performer,
     albumartist,
     genre,
+    mood,
+    key,
+    bpm,
     track_no,
     date,
     comment
@@ -165,6 +180,9 @@ BEGIN
         performer,
         albumartist,
         genre,
+        mood,
+        key,
+        bpm,
         track_no,
         date,
         comment
@@ -183,6 +201,9 @@ BEGIN
         performer,
         albumartist,
         genre,
+        mood,
+        key,
+        bpm,
         track_no,
         date,
         comment

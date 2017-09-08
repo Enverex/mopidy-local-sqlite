@@ -46,6 +46,9 @@ _BROWSE_FILTERS = {
         'composer': 'track.composers = ?',
         'date': "track.date LIKE ? || '%'",
         'genre': 'track.genre = ?',
+        'mood': 'track.mood = ?',
+        'key': 'track.key = ?',
+        'bpm': 'track.bpm = ?',
         'performer': 'track.performers = ?',
         'max-age': "track.last_modified >= (strftime('%s', 'now') - ?) * 1000",
     },
@@ -79,6 +82,15 @@ _BROWSE_FILTERS = {
         'genre': """? IN (
             SELECT genre FROM track WHERE album = album.uri
         )""",
+        'mood': """? IN (
+            SELECT mood FROM track WHERE album = album.uri
+        )""",
+        'key': """? IN (
+            SELECT key FROM track WHERE album = album.uri
+        )""",
+        'bpm': """? IN (
+            SELECT bpm FROM track WHERE album = album.uri
+        )""",
         'performer': """? IN (
             SELECT performers FROM track WHERE album = album.uri
         )""",
@@ -98,6 +110,9 @@ _BROWSE_FILTERS = {
         'composer': 'composers = ?',
         'date': "date LIKE ? || '%'",
         'genre': 'genre = ?',
+        'mood': 'mood = ?',
+        'key': 'key = ?',
+        'bpm': 'bpm = ?',
         'performer': 'performers = ?',
         'max-age': "last_modified >= (strftime('%s', 'now') - ?) * 1000",
     }
@@ -128,6 +143,9 @@ _SEARCH_FILTERS = {
     'composer': 'composer_uri = ?',
     'date': "date LIKE ? || '%'",
     'genre': 'genre = ?',
+    'mood': 'mood = ?',
+    'key': 'key = ?',
+    'bpm': 'bpm = ?',
     'performer': 'performer_uri = ?',
     'max-age': "last_modified >= (strftime('%s', 'now') - ?) * 1000",
 }
@@ -141,6 +159,9 @@ _SEARCH_FIELDS = {
     'performer',
     'albumartist',
     'genre',
+    'mood',
+    'key',
+    'bpm',
     'track_no',
     'date',
     'comment'
@@ -302,6 +323,9 @@ def insert_track(c, track):
         'composers': insert_artists(c, track.composers),
         'performers': insert_artists(c, track.performers),
         'genre': track.genre,
+        'mood': track.mood,
+        'key': track.key,
+        'bpm': track.bpm,
         'track_no': track.track_no,
         'disc_no': track.disc_no,
         'date': track.date,
@@ -411,6 +435,9 @@ def _track(row):
         'uri': row.uri,
         'name': row.name,
         'genre': row.genre,
+        'mood': row.mood,
+        'key': row.key,
+        'bpm': row.bpm,
         'track_no': row.track_no,
         'disc_no': row.disc_no,
         'date': row.date,
